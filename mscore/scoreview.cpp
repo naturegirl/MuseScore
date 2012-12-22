@@ -15,6 +15,8 @@
  Implementation of most part of class ScoreView.
 */
 
+#include <iostream>
+
 #include "globals.h"
 #include "scoreview.h"
 #include "libmscore/score.h"
@@ -1284,6 +1286,9 @@ void ScoreView::moveCursor()
 //    move cursor during playback
 //---------------------------------------------------------
 
+// here the blue vertical bar is moving
+// the coloring of the notes is done in heartbeat
+// while heartBeat() is called every 20ms, moveCursor() is only called on actual moving!
 void ScoreView::moveCursor(int tick)
       {
       Measure* measure = score()->tick2measure(tick);
@@ -1319,7 +1324,11 @@ void ScoreView::moveCursor(int tick)
 
       QColor c(MScore::selectColor[0]);
       c.setAlpha(50);
-      _cursor->setColor(c);
+      
+      QColor color(255,0,0);
+      color.setAlpha(50);
+      
+      _cursor->setColor(color);
       _cursor->setTick(tick);
 
       System* system = measure->system();
@@ -1351,6 +1360,7 @@ void ScoreView::moveCursor(int tick)
       update(_matrix.mapRect(_cursor->rect()).toRect().adjusted(-1,-1,1,1));
       if (mscore->panDuringPlayback())
             adjustCanvasPosition(measure, true);
+            
       }
 
 void ScoreView::moveCursor(Segment* segment, int track)

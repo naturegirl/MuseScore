@@ -29,6 +29,9 @@
 #include "pa.h"
 #endif
 
+#include <iostream>
+#include <ctime>
+
 #include "msynth/synti.h"
 #include "libmscore/slur.h"
 #include "libmscore/score.h"
@@ -262,7 +265,7 @@ void Seq::setScoreView(ScoreView* v)
       cs = cv ? cv->score() : 0;
 
       if (!heartBeatTimer->isActive())
-            heartBeatTimer->start(20);    // msec
+            heartBeatTimer->start(20);    // msec. Means that heartbeat() is called every 20 ms
 
       playlistChanged = true;
       synti->reset();
@@ -1329,6 +1332,8 @@ QString Seq::synthIndexToName(int idx) const
 //   heartBeat
 //    update GUI
 //---------------------------------------------------------
+// is called every 20 ms as set by heartBeatTimer
+// meaning not on every call the gui is updated
 
 void Seq::heartBeat()
       {
@@ -1343,6 +1348,8 @@ void Seq::heartBeat()
       processToGuiMessages();
       if (state != TRANSPORT_PLAY)
             return;
+
+      std::cout << "heartbeat continued! ";
       PlayPanel* pp = mscore->getPlayPanel();
       int endTime = playTime;
       if (pp)
@@ -1356,6 +1363,7 @@ void Seq::heartBeat()
             if (guiPos.value().type() == ME_NOTEON) {
                   Event n = guiPos.value();
                   const Note* note1 = n.note();
+                    // used for coloring next note
                   if (n.velo()) {
                         while (note1) {
                               ((Note*)note1)->setSelected(true);  // HACK
@@ -1365,6 +1373,7 @@ void Seq::heartBeat()
                               }
 
                         }
+                    // used for decoloring previous note
                   else {
                         while (note1) {
                               ((Note*)note1)->setSelected(false);       // HACK
@@ -1375,6 +1384,7 @@ void Seq::heartBeat()
                         }
                   }
             }
+      std::cout << "for loop continued";
 
       int utick = guiPos.key();
       int tick = cs->repeatList()->utick2tick(utick);
