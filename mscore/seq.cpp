@@ -946,7 +946,16 @@ void Seq::setPos(int utick)
 
       playTime  = cs->utick2utime(utick) * MScore::sampleRate;
       playPos   = events.lowerBound(utick);
-      guiPos    = playPos;
+      guiPos    = playPos;          // This step is important!!
+      std::cout << "setPos() ";
+      EventMap::const_iterator it = guiPos;
+      /*
+      while (it != events.constEnd()) {
+            std::cout << "setPos() it key " << it.key() << " ";
+            it++;
+      }
+      std::cout << "end" << std::endl;
+      */
       }
 
 //---------------------------------------------------------
@@ -1334,7 +1343,6 @@ QString Seq::synthIndexToName(int idx) const
 //---------------------------------------------------------
 // is called every 20 ms as set by heartBeatTimer
 // meaning not on every call the gui is updated
-
 void Seq::heartBeat()
       {
       SynthControl* sc = mscore->getSynthControl();
@@ -1349,7 +1357,6 @@ void Seq::heartBeat()
       if (state != TRANSPORT_PLAY)
             return;
 
-      std::cout << "heartbeat continued! ";
       PlayPanel* pp = mscore->getPlayPanel();
       int endTime = playTime;
       if (pp)
@@ -1384,10 +1391,15 @@ void Seq::heartBeat()
                         }
                   }
             }
-      std::cout << "for loop continued";
 
       int utick = guiPos.key();
       int tick = cs->repeatList()->utick2tick(utick);
+            static int static_tick;
+            if (tick != static_tick) {
+                  static_tick = tick;
+             //     std::cout << "tick change " << static_tick << " " << utick << endl;
+                  }
+            
       mscore->currentScoreView()->moveCursor(tick);
       mscore->setPos(tick);
       if (pp)

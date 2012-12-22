@@ -1288,9 +1288,10 @@ void ScoreView::moveCursor()
 
 // here the blue vertical bar is moving
 // the coloring of the notes is done in heartbeat
-// while heartBeat() is called every 20ms, moveCursor() is only called on actual moving!
+// also called every 20ms but x only changes when note actually moves
 void ScoreView::moveCursor(int tick)
       {
+            
       Measure* measure = score()->tick2measure(tick);
       if (measure == 0)
             return;
@@ -1321,7 +1322,7 @@ void ScoreView::moveCursor(int tick)
             }
       if (s == 0)
             return;
-
+      
       QColor c(MScore::selectColor[0]);
       c.setAlpha(50);
       

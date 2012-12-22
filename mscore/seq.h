@@ -102,6 +102,7 @@ class Seq : public QObject, public Sequencer {
       int playTime;                       // current play position in samples
       int endTick;
 
+      // EventMap maps from integer to Event
       EventMap::const_iterator playPos;   // moved in real time thread
       EventMap::const_iterator guiPos;    // moved in gui thread
       QList<const Note*> markedNotes;     // notes marked as sounding
