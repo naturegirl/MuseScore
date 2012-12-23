@@ -1550,11 +1550,12 @@ bool Score::processMidiInput()
           qDebug("processMidiInput");
       if (midiInputQueue.isEmpty())
             return false;
-
+      qDebug("processMidiInput dequeueing");
       bool cmdActive = false;
       Note* n = 0;
       while (!midiInputQueue.isEmpty()) {
             MidiInputEvent ev = midiInputQueue.dequeue();
+            // MyNote: I could do the score following here?
             if (MScore::debugMode)
                   qDebug("<-- !noteentry dequeue %i", ev.pitch);
             if (!noteEntryMode()) {
@@ -1566,7 +1567,7 @@ bool Score::processMidiInput()
                         p = staff(staffIdx)->part();
                   if (p)
                         MScore::seq->startNote(p->instr()->channel(0).channel, ev.pitch, 80,
-                           MScore::defaultPlayDuration, 0.0);
+                           MScore::defaultPlayDuration, 0.0); // All Notes have defaultPlayDuration!
                   }
             else  {
                   if (!cmdActive) {

@@ -159,6 +159,7 @@ struct MidiMapping {
 //   MidiInputEvent
 //---------------------------------------------------------
 
+// MyNote: there's no duration. Only this information available from keyboard
 struct MidiInputEvent {
       int pitch;
       bool chord;

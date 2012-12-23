@@ -16,6 +16,8 @@
  render score into event list
 */
 
+#include <iostream>
+
 #include "score.h"
 #include "volta.h"
 #include "note.h"
@@ -105,9 +107,17 @@ void Score::updateChannel()
 //   playNote
 //---------------------------------------------------------
 
+// Note: here the notes are inserted into events
+// so for inserting from MIDI keyboard we just need MIDI information, and the time
 static void playNote(EventMap* events, const Note* note, int channel, int pitch,
    int velo, int onTime, int offTime)
       {
+      static int static_pitch;
+      if (static_pitch != pitch && onTime < 8000) {
+            static_pitch = pitch;
+            std::cout << "playNote(): pitch " << pitch << "onTime " << onTime << std::endl;            
+      }
+
       velo = note->customizeVelocity(velo);
       Event ev(ME_NOTEON);
       ev.setChannel(channel);
@@ -780,8 +790,11 @@ void Score::createPlayEvents()
       QList<Slur*> slurs;
       int etrack = nstaves() * VOICES;
       for (int track = 0; track < etrack; ++track) {
-            for (Measure* m = firstMeasure(); m; m = m->nextMeasure())
+            // Measure is each "Takt"
+            for (Measure* m = firstMeasure(); m; m = m->nextMeasure()) {
                   createPlayEvents(m, track, &slurs);
+                  }
+            std::cout << std::endl;
             }
       }
 
@@ -789,7 +802,7 @@ void Score::createPlayEvents()
 //   renderMidi
 //    export score to event list
 //---------------------------------------------------------
-
+// NOTE: if I use midi keyboard it should be able to render it to events here?
 void Score::renderMidi(EventMap* events)
       {
       createPlayEvents();

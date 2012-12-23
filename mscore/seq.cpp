@@ -860,7 +860,7 @@ void Seq::initInstruments()
 
 void Seq::collectEvents()
       {
-      //do not collect even while playing
+      //do not collect event while playing
       if (state == TRANSPORT_PLAY)
             return;
       events.clear();
@@ -947,15 +947,6 @@ void Seq::setPos(int utick)
       playTime  = cs->utick2utime(utick) * MScore::sampleRate;
       playPos   = events.lowerBound(utick);
       guiPos    = playPos;          // This step is important!!
-      std::cout << "setPos() ";
-      EventMap::const_iterator it = guiPos;
-      /*
-      while (it != events.constEnd()) {
-            std::cout << "setPos() it key " << it.key() << " ";
-            it++;
-      }
-      std::cout << "end" << std::endl;
-      */
       }
 
 //---------------------------------------------------------
@@ -1397,7 +1388,7 @@ void Seq::heartBeat()
             static int static_tick;
             if (tick != static_tick) {
                   static_tick = tick;
-             //     std::cout << "tick change " << static_tick << " " << utick << endl;
+                  // std::cout << "tick change " << static_tick << " ";
                   }
             
       mscore->currentScoreView()->moveCursor(tick);

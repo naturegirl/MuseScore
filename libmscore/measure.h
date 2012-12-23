@@ -84,7 +84,8 @@ class Measure : public MeasureBase {
 
       SegmentList _segments;
 
-      Fraction _timesig;
+      // Not sure what difference between them is. Seem to have the same values
+      Fraction _timesig;      // the time for that measure, like 4/4 5/4 2/2
       Fraction _len;          ///< actual length of measure
 
       int _repeatCount;       ///< end repeat marker und repeat count
