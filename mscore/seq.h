@@ -159,7 +159,7 @@ class Seq : public QObject, public Sequencer {
       void prevChord();
 
       void collectEvents();
-      EventMap* getEvents();
+      EventMap* getEvents();     // naturegirl
       
       void guiStop();
       void stopWait();

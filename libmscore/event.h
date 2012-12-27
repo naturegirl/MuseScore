@@ -131,6 +131,7 @@ class EventData;
 
 class Event {
       QSharedDataPointer<EventData> d;
+      bool played;      // whether this note was already played or not
 
    public:
       Event();
@@ -144,6 +145,8 @@ class Event {
       void dump() const;
 
       bool isChannelEvent() const;
+      bool isPlayed();        // naturegirl
+      void setPlayed(bool val);
 
       int noquantOntime() const;
       void setNoquantOntime(int v);

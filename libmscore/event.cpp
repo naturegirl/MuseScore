@@ -130,6 +130,8 @@ bool EventData::isChannelEvent() const
       return false;
       }
 
+
+
 //---------------------------------------------------------
 //   EventData::write
 //---------------------------------------------------------
@@ -248,6 +250,7 @@ bool EventData::operator==(const EventData&) const
 Event::Event()
       {
       d = new EventData;
+      played = false;   // new notes haven't been played yet
       }
 
 Event::Event(const Event& s)
@@ -258,6 +261,7 @@ Event::Event(const Event& s)
 Event::Event(int t)
       {
       d = new EventData(t);
+      played = false;
       }
 
 Event::~Event()
@@ -275,6 +279,9 @@ void Event::write(Xml& xml) const     { d->write(xml); }
 // void Event::read(QDomElement e)       { d->read(e);    }
 
 bool Event::isChannelEvent() const    { return d->isChannelEvent(); }
+
+bool Event::isPlayed()              {      return played; }
+void Event::setPlayed(bool val)     {      played = val; }
 
 int Event::noquantOntime() const      { return d->_noquantOntime;       }
 void Event::setNoquantOntime(int v)   { d->_noquantOntime = v;          }

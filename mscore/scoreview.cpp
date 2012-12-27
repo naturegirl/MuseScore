@@ -4734,7 +4734,8 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
             if (time+1 == nexttime)
                   continue;
             int pitch = event.pitch();
-            std::cout << "midiNoteReceived event info time: " << time << " pitch: " << pitch << std::endl;
+            std::cout << "midiNoteReceived event info time: " << time << " pitch: " << pitch;
+            std::cout << " played :" << event.isPlayed() << std::endl;
       }
 
 qDebug("midiNoteReceived %d chord %d", pitch, chord);
