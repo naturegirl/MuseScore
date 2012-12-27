@@ -159,6 +159,8 @@ class Seq : public QObject, public Sequencer {
       void prevChord();
 
       void collectEvents();
+      EventMap* getEvents();
+      
       void guiStop();
       void stopWait();
 

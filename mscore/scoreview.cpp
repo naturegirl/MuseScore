@@ -4715,6 +4715,27 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
       MidiInputEvent ev;
       ev.pitch = pitch;
       ev.chord = chord;
+      
+      EventMap *myevents = seq->getEvents();
+      EventMap::const_iterator it = myevents->constBegin();
+      int counter = 0;
+      for (;it != myevents->constEnd(); it++) {
+            counter++;
+            if (counter > 15)
+                  break;
+            int time = it.key();
+            int nexttime = (it+1).key();
+            Event event = it.value();
+            
+            // skip metronome
+            if (event.type() == ME_TICK1 || event.type() == ME_TICK2)
+                  continue;
+            // skip the end note that appears once before next note
+            if (time+1 == nexttime)
+                  continue;
+            int pitch = event.pitch();
+            std::cout << "midiNoteReceived event info time: " << time << " pitch: " << pitch << std::endl;
+      }
 
 qDebug("midiNoteReceived %d chord %d", pitch, chord);
       score()->enqueueMidiEvent(ev);

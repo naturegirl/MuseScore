@@ -115,7 +115,7 @@ static void playNote(EventMap* events, const Note* note, int channel, int pitch,
       static int static_pitch;
       if (static_pitch != pitch && onTime < 8000) {
             static_pitch = pitch;
-            std::cout << "playNote(): pitch " << pitch << "onTime " << onTime << std::endl;            
+            // std::cout << "playNote(): pitch " << pitch << "onTime " << onTime << std::endl;
       }
 
       velo = note->customizeVelocity(velo);
