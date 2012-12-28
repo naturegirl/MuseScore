@@ -4733,7 +4733,7 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
       //int cnt = 0;
       for (;it != myevents->end(); it++) {
             //cnt++;
-            //if (cnt > 20) break;
+            //if (cnt > 100) break;
             int time = it.key();
             int nexttime = (it+1).key();
             event = &(it.value());
@@ -4742,16 +4742,22 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
             if (event->type() == ME_TICK1 || event->type() == ME_TICK2)
                   continue;
             // skip the end note that appears once before next note
-            if (time+1 == nexttime)
+            //if (time+1 == nexttime)
+            //      continue;
+            
+            // do another way. If time isn't a full number than it's not a note
+            // this way we won't skip notes that are at the same time (chords)
+            if (time % 10 != 0)
                   continue;
+            
             int pitch = event->pitch();
-            std::cout << "pitch:  " << pitch << " " << event->isPlayed() << std::endl;
+            std::cout << "pitch:  " << pitch << " "  << pitch2step(pitch) << " " << event->type() << " " << time << std::endl;
             
             if (event->isPlayed() == false)
                   break;
       }
 
-      std::cout << "next note pitch: " << event->pitch() << std::endl;
+      std::cout << "next note pitch: " << event->pitch() << " " << pitch2step(event->pitch()) << std::endl;
       if (pitch == event->pitch()) {
             std::cout << "RIGHT NOTE PLAYED!!" << std::endl;
             event->setPlayed(true);
