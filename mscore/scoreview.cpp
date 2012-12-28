@@ -2526,6 +2526,14 @@ void ScoreView::cmd(const QAction* a)
             else
                   getAction("play")->setChecked(false);
             }
+      else if (cmd == "ownplay") {
+            if (seq->canStart()) {
+                  std::cout << "pressed ownplay button!" << std::endl;
+            }
+            else {
+                  std::cout << "Scoreview::cmd() : something is wrong here..." << std::endl;
+            }
+      }
       else if (cmd == "find")
             sm->postEvent(new CommandEvent(cmd));
       else if (cmd == "page-prev")

@@ -580,6 +580,9 @@ MuseScore::MuseScore()
       transportTools->addSeparator();
       transportTools->addAction(getAction("rewind"));
       transportTools->addAction(getAction("play"));
+      
+      transportTools->addAction(getAction("ownplay"));      // naturegirl
+      
       transportTools->addSeparator();
       a = getAction("repeat");
       a->setChecked(MScore::playRepeats);

@@ -69,6 +69,7 @@ static const char* iconNames[] = {
       "speaker.svg",
       "start.svg",
       "play.svg",
+      "play.svg",       // icon for ownplay button
       "repeat.svg",
       "pan.svg",
       "sbeam.svg",

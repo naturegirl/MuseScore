@@ -1458,6 +1458,15 @@ Shortcut Shortcut::sc[] = {
           play_ICON
          ),
       Shortcut(
+            STATE_NORMAL | STATE_NOTE_ENTRY | STATE_PLAY,
+            0,
+            "ownplay",
+            QT_TRANSLATE_NOOP("action","Own Play"),
+            QT_TRANSLATE_NOOP("action","Own play"),
+            QT_TRANSLATE_NOOP("action","Start or stop own play"),
+            ownplay_ICON
+            ),
+      Shortcut(
          STATE_PLAY,
          0,
          "play-prev-chord",
