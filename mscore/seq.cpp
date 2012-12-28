@@ -1356,6 +1356,8 @@ void Seq::heartBeat()
       processToGuiMessages();
       if (state != TRANSPORT_PLAY)
             return;
+            
+      // MyNote: somehow add another state here?
 
       PlayPanel* pp = mscore->getPlayPanel();
       int endTime = playTime;

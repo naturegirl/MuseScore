@@ -4717,27 +4717,41 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
       ev.chord = chord;
       
       EventMap *myevents = seq->getEvents();
-      EventMap::const_iterator it = myevents->constBegin();
-      int counter = 0;
-      for (;it != myevents->constEnd(); it++) {
-            counter++;
-            if (counter > 15)
-                  break;
+      
+      EventMap::iterator it = myevents->begin();
+      Event *event; // the next note that should be played
+      
+      
+      //int cnt = 0;
+      for (;it != myevents->end(); it++) {
+            //cnt++;
+            //if (cnt > 20) break;
             int time = it.key();
             int nexttime = (it+1).key();
-            Event event = it.value();
+            event = &(it.value());
             
             // skip metronome
-            if (event.type() == ME_TICK1 || event.type() == ME_TICK2)
+            if (event->type() == ME_TICK1 || event->type() == ME_TICK2)
                   continue;
             // skip the end note that appears once before next note
             if (time+1 == nexttime)
                   continue;
-            int pitch = event.pitch();
-            std::cout << "midiNoteReceived event info time: " << time << " pitch: " << pitch;
-            std::cout << " played :" << event.isPlayed() << std::endl;
+            int pitch = event->pitch();
+            std::cout << "pitch:  " << pitch << " " << event->isPlayed() << std::endl;
+            
+            if (event->isPlayed() == false)
+                  break;
       }
 
+      std::cout << "next note pitch: " << event->pitch() << std::endl;
+      if (pitch == event->pitch()) {
+            std::cout << "RIGHT NOTE PLAYED!!" << std::endl;
+            event->setPlayed(true);
+      }
+      else
+            std::cout << "WRONG NOTE, Try Again..." << std::endl;
+      
+      
 qDebug("midiNoteReceived %d chord %d", pitch, chord);
       score()->enqueueMidiEvent(ev);
       if (!score()->undo()->active())
