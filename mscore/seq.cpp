@@ -881,13 +881,26 @@ void Seq::collectEvents()
       }
 
 //---------------------------------------------------------
-//   getEvents (naturegirl)
+//   getEvents naturegirl
 //---------------------------------------------------------
 EventMap* Seq::getEvents()
       {
             return &events;
       }
 
+//---------------------------------------------------------
+//   getEvents naturegirl
+//---------------------------------------------------------
+
+void Seq::setOwnPlayState(bool val)
+      {
+          ownPlayState = val;
+      }
+
+void Seq::switchOwnPlayState()
+{
+      ownPlayState = !ownPlayState;
+}
 
 //---------------------------------------------------------
 //   getCurTick
@@ -1354,11 +1367,35 @@ void Seq::heartBeat()
             sc->setMeter(meterValue[0], meterValue[1], meterPeakValue[0], meterPeakValue[1]);
             }
       processToGuiMessages();
+      
+      
+      if (ownPlayState) {
+            
+            EventMap::iterator it = events.begin();
+            Event event;
+            int time;
+            int cnt = 0;
+            // just find the last played note
+            
+            for (;it != events.end(); it++) {
+                  //std::cout << "for loop count " << cnt << " ";
+                  event = it.value();
+                  time = it.key();
+                  if (event.isPlayed() == false) {
+                        std::cout << "time " << time << std::endl;
+                        break;
+                  }
+            }
+            //std::cout << " heartBeat() time: " << time << " ";
+            // let's just try to move that stuff here
+            //mscore->currentScoreView()->moveCursor(time);
+            
+      }
+      
+      
       if (state != TRANSPORT_PLAY)
             return;
             
-      // MyNote: somehow add another state here?
-
       PlayPanel* pp = mscore->getPlayPanel();
       int endTime = playTime;
       if (pp)

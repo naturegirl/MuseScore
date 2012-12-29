@@ -84,10 +84,13 @@ class Seq : public QObject, public Sequencer {
       ScoreView* cv;
       bool running;                       // true if sequencer is available
       int state;                          // TRANSPORT_STOP, TRANSPORT_PLAY, TRANSPORT_STARTING=3
+                                          // naturegirl: add a state for ownPlay. Above refer to Jack audio Transport states
 
       bool oggInit;
 
       bool playlistChanged;
+      
+      bool ownPlayState = false;      // true when in own play state. (naturegirl)
 
       SeqMsgFifo toSeq;
       SeqMsgFifo fromSeq;
@@ -146,7 +149,7 @@ class Seq : public QObject, public Sequencer {
    public:
       // this are also the jack audio transport states:
       enum { TRANSPORT_STOP=0, TRANSPORT_PLAY=1, TRANSPORT_STARTING=3,
-           TRANSPORT_NET_STARTING=4 };
+           TRANSPORT_NET_STARTING=4};
 
       Seq();
       ~Seq();
@@ -160,6 +163,8 @@ class Seq : public QObject, public Sequencer {
 
       void collectEvents();
       EventMap* getEvents();     // naturegirl
+      void setOwnPlayState(bool val); //naturegirl
+      void switchOwnPlayState();
       
       void guiStop();
       void stopWait();

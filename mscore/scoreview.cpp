@@ -2528,10 +2528,7 @@ void ScoreView::cmd(const QAction* a)
             }
       else if (cmd == "ownplay") {
             if (seq->canStart()) {
-                  std::cout << "pressed ownplay button!" << std::endl;
-            }
-            else {
-                  std::cout << "Scoreview::cmd() : something is wrong here..." << std::endl;
+                  seq->switchOwnPlayState();    // for GUI heartbeat(). On other click turn off
             }
       }
       else if (cmd == "find")
