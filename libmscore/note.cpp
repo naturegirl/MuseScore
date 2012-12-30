@@ -16,6 +16,7 @@
 */
 
 #include <assert.h>
+#include <iostream>
 
 #include "note.h"
 #include "score.h"
@@ -152,15 +153,15 @@ Note::Note(Score* s)
       _tieFor            = 0;
       _tieBack           = 0;
       _tpc               = INVALID_TPC;
-      _headGroup         = HEAD_NORMAL;
+//      _headGroup         = HEAD_NORMAL;
+      _headGroup         = HEAD_DIAMOND;
       _headType          = HEAD_AUTO;
-
       _hidden            = false;
       _subchannel        = 0;
 
       _veloType          = MScore::OFFSET_VAL;
       _veloOffset        = 0;
-
+      
       _dots[0]           = 0;
       _dots[1]           = 0;
       _dots[2]           = 0;

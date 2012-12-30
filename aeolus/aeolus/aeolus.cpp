@@ -34,7 +34,8 @@ void Aeolus::init(int samplerate)
       {
       setlocale(LC_ALL, "C"); // scanf of floats does not work otherwise
 
-      QString stops = mscoreGlobalShare + "/sound/aeolus/stops";
+      // QString stops = mscoreGlobalShare + "/sound/aeolus/stops";
+      QString stops = "/Users/jenniferguo/cos597b/FinalProject/resources/MuseScoreXcode/aeolus/stops/";     // naturegirl. HACK!!
       int n = strlen(qPrintable(stops));
       char* stopsPath = new char[n+1];
       strcpy(stopsPath, qPrintable(stops));

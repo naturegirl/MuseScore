@@ -24,6 +24,8 @@
 #include "ottava.h"
 #include "trill.h"
 
+#include  <iostream>
+
 qreal MScore::PDPI = 1200;
 qreal MScore::DPI  = 1200;
 qreal MScore::DPMM;
