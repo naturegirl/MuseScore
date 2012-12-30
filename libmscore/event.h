@@ -131,7 +131,7 @@ class EventData;
 
 class Event {
       QSharedDataPointer<EventData> d;
-      bool played = false;      // whether this note was already played or not
+      bool played;      // whether this note was already played or not
 
    public:
       Event();

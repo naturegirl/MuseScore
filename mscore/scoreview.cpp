@@ -2528,6 +2528,7 @@ void ScoreView::cmd(const QAction* a)
             }
       else if (cmd == "ownplay") {
             if (seq->canStart()) {
+                  std::cout << "button pushed ";
                   seq->switchOwnPlayState();    // for GUI heartbeat(). On other click turn off
             }
       }

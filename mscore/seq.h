@@ -90,7 +90,7 @@ class Seq : public QObject, public Sequencer {
 
       bool playlistChanged;
       
-      bool ownPlayState = false;      // true when in own play state. (naturegirl)
+      bool ownPlayState;      // true when in own play state. (naturegirl)
 
       SeqMsgFifo toSeq;
       SeqMsgFifo fromSeq;

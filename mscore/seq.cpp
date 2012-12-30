@@ -192,6 +192,8 @@ Seq::Seq()
       playlistChanged = false;
       cs              = 0;
       cv              = 0;
+      
+      ownPlayState = false;
 
       endTick  = 0;
       state    = TRANSPORT_STOP;
@@ -1368,7 +1370,7 @@ void Seq::heartBeat()
             }
       processToGuiMessages();
       
-      
+      /*
       if (ownPlayState) {
             
             EventMap::iterator it = events.begin();
@@ -1391,7 +1393,7 @@ void Seq::heartBeat()
             //mscore->currentScoreView()->moveCursor(time);
             
       }
-      
+      */
       
       if (state != TRANSPORT_PLAY)
             return;
