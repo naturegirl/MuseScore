@@ -1370,7 +1370,7 @@ void Seq::heartBeat()
             }
       processToGuiMessages();
       
-      /*
+      
       if (ownPlayState) {
             
             EventMap::iterator it = events.begin();
@@ -1388,12 +1388,13 @@ void Seq::heartBeat()
                         break;
                   }
             }
+            std::cout << " heartbeat() time " << time;
             //std::cout << " heartBeat() time: " << time << " ";
             // let's just try to move that stuff here
             //mscore->currentScoreView()->moveCursor(time);
             
       }
-      */
+      
       
       if (state != TRANSPORT_PLAY)
             return;

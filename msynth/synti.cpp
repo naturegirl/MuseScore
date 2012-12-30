@@ -173,6 +173,10 @@ SyntiParameter MasterSynth::parameter(int id) const
       {
       SParmId spid(id);
       std::cout << "spid.syntiId: " << spid.syntiId << std::endl;
+      std::cout << syntis[spid.syntiId] << std::endl;
+      Synth *s = syntis[spid.syntiId];
+      s->parameter(id);
+
       return syntis[spid.syntiId]->parameter(id);
       }
 
