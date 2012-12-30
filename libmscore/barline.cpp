@@ -102,7 +102,13 @@ void BarLine::getY(qreal* y1, qreal* y2) const
                   system = static_cast<System*>(parent());
                   measure = system->firstMeasure();
                   }
-
+            
+            // naturegirl. Try a hack since measure is null sometimes and throws EXC_BAD_ACCESS
+            if (measure == NULL) {
+                  *y1 = *y2 = 0;
+                  return;
+            }
+            
             StaffLines* l1   = measure->staffLines(staffIdx1);
             StaffLines* l2   = measure->staffLines(staffIdx2);
 

@@ -157,7 +157,7 @@ class Measure : public MeasureBase {
       QList<MStaff*>* staffList()          { return &staves;      }
       MStaff* mstaff(int staffIdx)         { return staves[staffIdx]; }
       bool hasVoices(int staffIdx) const   { return staves[staffIdx]->hasVoices; }
-      StaffLines* staffLines(int staffIdx) { return staves[staffIdx]->lines; }
+      StaffLines* staffLines(int staffIdx) { return staves[staffIdx]->lines; }      // this seems to be null here
       int no() const                       { return _no;          }
       bool irregular() const               { return _irregular;   }
       void setIrregular(bool val)          { _irregular = val;    }

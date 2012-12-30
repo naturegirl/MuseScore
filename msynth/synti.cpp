@@ -30,6 +30,8 @@
 #include "libmscore/xml.h"
 #include "libmscore/sparm_p.h"
 
+#include <iostream>
+
 //---------------------------------------------------------
 //   reset
 //---------------------------------------------------------
@@ -170,6 +172,7 @@ QList<MidiPatch*> MasterSynth::getPatchInfo() const
 SyntiParameter MasterSynth::parameter(int id) const
       {
       SParmId spid(id);
+      std::cout << "spid.syntiId: " << spid.syntiId << std::endl;
       return syntis[spid.syntiId]->parameter(id);
       }
 
