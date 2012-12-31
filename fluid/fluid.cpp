@@ -260,8 +260,9 @@ void Fluid::damp_voices(int chan)
 void Fluid::allNotesOff(int chan)
       {
       foreach(Voice* v, activeVoices) {
-            if (chan == -1 || v->chan == chan)
+            if (chan == -1 || v->chan == chan) {
                   v->noteoff();
+                  }
             }
       }
 

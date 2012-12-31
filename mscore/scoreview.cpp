@@ -4733,15 +4733,11 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
             //cnt++;
             //if (cnt > 100) break;
             int time = it.key();
-            int nexttime = (it+1).key();
             event = &(it.value());
             
             // skip metronome
             if (event->type() == ME_TICK1 || event->type() == ME_TICK2)
                   continue;
-            // skip the end note that appears once before next note
-            //if (time+1 == nexttime)
-            //      continue;
             
             // do another way. If time isn't a full number than it's not a note
             // this way we won't skip notes that are at the same time (chords)

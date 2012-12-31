@@ -1372,23 +1372,37 @@ void Seq::heartBeat()
       
       
       if (ownPlayState) {
-            
+            static int cnt;
             EventMap::iterator it = events.begin();
             Event event;
             int time;
-            int cnt = 0;
             // just find the last played note
             
+            // have to iterate the same way like in midiNoteReceived
+            // skipping metronome and only keeping "full" times
             for (;it != events.end(); it++) {
-                  //std::cout << "for loop count " << cnt << " ";
                   event = it.value();
                   time = it.key();
+                  // skip metronome
+                  if (event.type() == ME_TICK1 || event.type() == ME_TICK2)
+                        continue;
+                  
+                  // do another way. If time isn't a full number than it's not a note
+                  // this way we won't skip notes that are at the same time (chords)
+                  if (time % 10 != 0)
+                        continue;
+                  
                   if (event.isPlayed() == false) {
-                        std::cout << "time " << time << std::endl;
                         break;
                   }
             }
-            std::cout << " heartbeat() time " << time;
+            // now event should have the first note that's not played yet with its time
+            
+            cnt++;
+            if (cnt == 100) {
+                  std::cout << " heartbeat() time " << time << "pitch " << event.pitch();
+                  cnt = 0;
+                  }
             //std::cout << " heartBeat() time: " << time << " ";
             // let's just try to move that stuff here
             //mscore->currentScoreView()->moveCursor(time);
