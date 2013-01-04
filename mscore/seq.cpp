@@ -1373,18 +1373,22 @@ void Seq::heartBeat()
       
       if (ownPlayState) {
             static int cnt;
-            EventMap::iterator it = events.begin();
-            Event event;
+            cnt++;
+            if (cnt == 100) cnt = 0;
+            EventMap *myevents = getEvents();
+            //EventMap::iterator it = events.begin();
+            EventMap::iterator it = myevents->begin();
+            Event *event;
             int time;
             // just find the last played note
             
             // have to iterate the same way like in midiNoteReceived
             // skipping metronome and only keeping "full" times
-            for (;it != events.end(); it++) {
-                  event = it.value();
+            for (;it != myevents->end(); it++) {
+                  event = &(it.value());
                   time = it.key();
                   // skip metronome
-                  if (event.type() == ME_TICK1 || event.type() == ME_TICK2)
+                  if (event->type() == ME_TICK1 || event->type() == ME_TICK2)
                         continue;
                   
                   // do another way. If time isn't a full number than it's not a note
@@ -1392,18 +1396,25 @@ void Seq::heartBeat()
                   if (time % 10 != 0)
                         continue;
                   
-                  if (event.isPlayed() == false) {
+                  if (cnt == 99) {
+                        int pitch = event->pitch();
+                        std::cout << "heartBeat(): pitch:  " << pitch << " "
+                        << pitch2step(pitch)  << " "
+                        << time << " ";
+                        if (event->isPlayed() == true)
+                              printf("isPlayed == true\n");
+                        else
+                              printf("isPlayed == false\n");
+                  }
+                  
+                  
+                  if (event->isPlayed() == false) {
                         break;
                   }
             }
+
             // now event should have the first note that's not played yet with its time
             
-            cnt++;
-            if (cnt == 100) {
-                  std::cout << " heartbeat() time " << time << "pitch " << event.pitch();
-                  cnt = 0;
-                  }
-            //std::cout << " heartBeat() time: " << time << " ";
             // let's just try to move that stuff here
             //mscore->currentScoreView()->moveCursor(time);
             

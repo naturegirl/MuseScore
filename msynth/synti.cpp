@@ -233,7 +233,7 @@ void MasterSynth::allNotesOff(int channel)
       int cnt = 0;
       foreach(Synth* synti, syntis) {
             cnt++;
-            std::cout << synti << " " << cnt << std::endl;
+            // std::cout << synti << " " << cnt << std::endl;
             // EXC_BAD_ACCESS here. when I do "print *synti* the _vptr$Synth = 0x0
             synti->allNotesOff(channel);
       }

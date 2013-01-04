@@ -4726,13 +4726,14 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
       
       EventMap::iterator it = myevents->begin();
       Event *event; // the next note that should be played
+      int time;
       
       
       //int cnt = 0;
       for (;it != myevents->end(); it++) {
             //cnt++;
             //if (cnt > 100) break;
-            int time = it.key();
+            time = it.key();
             event = &(it.value());
             
             // skip metronome
@@ -4745,16 +4746,31 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
                   continue;
             
             int pitch = event->pitch();
-            std::cout << "pitch:  " << pitch << " "  << pitch2step(pitch) << " " << event->type() << " " << time << std::endl;
+            
+            std::cout << "midiNoteReceived(): pitch:  " << pitch << " "
+                        << pitch2step(pitch)  << " "
+                        << time << " ";
+            if (event->isPlayed() == true)
+                  printf("isPlayed == true\n");
+            else
+                  printf("isPlayed == false\n");
             
             if (event->isPlayed() == false)
                   break;
       }
 
-      std::cout << "next note pitch: " << event->pitch() << " " << pitch2step(event->pitch()) << std::endl;
+      std::cout << "midiNoteReceived() next note pitch: " << event->pitch() << " "
+            << pitch2step(event->pitch()) << " ";
+      if (event->isPlayed() == true)
+            printf("isPlayed == true\n");
+      else
+            printf("isPlayed == false\n");
+            
+            
       if (pitch == event->pitch()) {
             std::cout << "RIGHT NOTE PLAYED!!" << std::endl;
             event->setPlayed(true);
+            myevents->insertMulti(time, *event);      // replace?
       }
       else
             std::cout << "WRONG NOTE, Try Again..." << std::endl;
