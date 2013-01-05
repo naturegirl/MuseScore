@@ -973,6 +973,12 @@ void Seq::setPos(int utick)
       guiPos    = playPos;          // This step is important!!
       }
 
+void Seq::mysetPos(int utick)
+{
+      myPlayPos = events.lowerBound(utick);
+      myGuiPos = myPlayPos;
+}
+
 //---------------------------------------------------------
 //   seek
 //    send seek message to sequencer
@@ -1416,7 +1422,48 @@ void Seq::heartBeat()
             // now event should have the first note that's not played yet with its time
             
             // let's just try to move that stuff here
-            //mscore->currentScoreView()->moveCursor(time);
+            
+            // the main point lies in updating playpos
+            myPlayPos = events.lowerBound(time);
+            
+            for (;;) {
+                  EventMap::const_iterator p = myGuiPos;
+                  if (p == myevents->constEnd())
+                      printf("in first if branch\n");
+                  if (p.key() > myPlayPos.key())
+                      printf("in second if branch p-key %d playpos %d guipos %d time %d\n", p.key(), myPlayPos.key(), myGuiPos.key(), time);
+                      
+                  if ((p == myevents->constEnd()) || (p.key() > myPlayPos.key()))  // something is wrong here
+                        break;
+                  p++;
+                  myGuiPos = p;
+                  if (myGuiPos.value().type() == ME_NOTEON) {
+                        Event n = myGuiPos.value();
+                        const Note* note1 = n.note();
+                        // used for coloring next note
+                        if (n.velo()) {
+                              while (note1) {
+                                    ((Note*)note1)->setSelected(true);  // HACK
+                                    markedNotes.append(note1);
+                                    cs->addRefresh(note1->canvasBoundingRect());
+                                    note1 = note1->tieFor() ? note1->tieFor()->endNote() : 0;
+                              }
+                              
+                        }
+                        // used for decoloring previous note
+                        else {
+                              while (note1) {
+                                    ((Note*)note1)->setSelected(false);       // HACK
+                                    cs->addRefresh(note1->canvasBoundingRect());
+                                    markedNotes.removeOne(note1);
+                                    note1 = note1->tieFor() ? note1->tieFor()->endNote() : 0;
+                              }
+                        }
+                  }
+            }
+            
+            mscore->currentScoreView()->moveCursor(time);
+            mscore->setPos(time);
             
       }
       
@@ -1458,16 +1505,13 @@ void Seq::heartBeat()
                         }
                   }
             }
+            
 
       int utick = guiPos.key();
       int tick = cs->repeatList()->utick2tick(utick);
-            static int static_tick;
-            if (tick != static_tick) {
-                  static_tick = tick;
-                  // std::cout << "tick change " << static_tick << " ";
-                  }
             
       mscore->currentScoreView()->moveCursor(tick);
+
       mscore->setPos(tick);
       if (pp)
             pp->heartBeat(tick, utick);

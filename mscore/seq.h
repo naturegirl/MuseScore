@@ -109,6 +109,10 @@ class Seq : public QObject, public Sequencer {
       EventMap::const_iterator playPos;   // moved in real time thread
       EventMap::const_iterator guiPos;    // moved in gui thread
       QList<const Note*> markedNotes;     // notes marked as sounding
+      
+      EventMap::const_iterator myPlayPos;   // moved in real time thread
+      EventMap::const_iterator myGuiPos;    // moved in gui thread
+      
 
       uint tackRest;     // metronome state
       uint tickRest;
@@ -164,6 +168,7 @@ class Seq : public QObject, public Sequencer {
       void collectEvents();
       EventMap* getEvents();     // naturegirl
       void setOwnPlayState(bool val); //naturegirl
+      void mysetPos(int);     // naturegirl
       void switchOwnPlayState();
       
       void guiStop();

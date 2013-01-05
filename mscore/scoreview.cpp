@@ -2529,6 +2529,7 @@ void ScoreView::cmd(const QAction* a)
       else if (cmd == "ownplay") {
             if (seq->canStart()) {
                   std::cout << "button pushed ";
+                  seq->mysetPos(0);
                   seq->switchOwnPlayState();    // for GUI heartbeat(). On other click turn off
             }
       }
@@ -4770,7 +4771,7 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
       if (pitch == event->pitch()) {
             std::cout << "RIGHT NOTE PLAYED!!" << std::endl;
             event->setPlayed(true);
-            myevents->insertMulti(time, *event);      // replace?
+            //myevents->insertMulti(time, *event);      // replace?
       }
       else
             std::cout << "WRONG NOTE, Try Again..." << std::endl;
