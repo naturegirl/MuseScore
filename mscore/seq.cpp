@@ -1404,13 +1404,13 @@ void Seq::heartBeat()
                   
                   if (cnt == 99) {
                         int pitch = event->pitch();
-                        std::cout << "heartBeat(): pitch:  " << pitch << " "
-                        << pitch2step(pitch)  << " "
-                        << time << " ";
+                        // printf("heartBeat() pitch %d step %d time %d\n", pitch, pitch2step(pitch), time);
+                        /*
                         if (event->isPlayed() == true)
                               printf("isPlayed == true\n");
                         else
                               printf("isPlayed == false\n");
+                        */
                   }
                   
                   
@@ -1428,12 +1428,13 @@ void Seq::heartBeat()
             
             for (;;) {
                   EventMap::const_iterator p = myGuiPos;
+                  /*
                   if (p == myevents->constEnd())
                       printf("in first if branch\n");
                   if (p.key() > myPlayPos.key())
                       printf("in second if branch p-key %d playpos %d guipos %d time %d\n", p.key(), myPlayPos.key(), myGuiPos.key(), time);
-                      
-                  if ((p == myevents->constEnd()) || (p.key() > myPlayPos.key()))  // something is wrong here
+                   */   
+                  if ((p == myevents->constEnd()) || (p.key() > myPlayPos.key()))
                         break;
                   p++;
                   myGuiPos = p;
@@ -1443,6 +1444,10 @@ void Seq::heartBeat()
                         // used for coloring next note
                         if (n.velo()) {
                               while (note1) {
+                                    printf("note pitch %d\n", note1->pitch());
+                                    if (note1->pitch() == 76)
+                                          printf("stop!\n");      //examine markedNotes in debugger
+                                    
                                     ((Note*)note1)->setSelected(true);  // HACK
                                     markedNotes.append(note1);
                                     cs->addRefresh(note1->canvasBoundingRect());
@@ -1463,8 +1468,7 @@ void Seq::heartBeat()
             }
             
             mscore->currentScoreView()->moveCursor(time);
-            mscore->setPos(time);
-            
+            //printf("time %d ", time);
       }
       
       
@@ -1487,6 +1491,7 @@ void Seq::heartBeat()
                     // used for coloring next note
                   if (n.velo()) {
                         while (note1) {
+                              printf("note pitch %d\n", note1->pitch());
                               ((Note*)note1)->setSelected(true);  // HACK
                               markedNotes.append(note1);
                               cs->addRefresh(note1->canvasBoundingRect());
@@ -1511,8 +1516,10 @@ void Seq::heartBeat()
       int tick = cs->repeatList()->utick2tick(utick);
             
       mscore->currentScoreView()->moveCursor(tick);
+      //printf("tick %d ", tick);
 
-      mscore->setPos(tick);
+      //mscore->setPos(tick);       // only for updating the "beat" description in the down right corner
+/*
       if (pp)
             pp->heartBeat(tick, utick);
 
@@ -1520,5 +1527,6 @@ void Seq::heartBeat()
       if (pre && pre->isVisible())
             pre->heartBeat(this);
       cs->end();
+      */
       }
 

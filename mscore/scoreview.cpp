@@ -4748,14 +4748,13 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
             
             int pitch = event->pitch();
             
-            std::cout << "midiNoteReceived(): pitch:  " << pitch << " "
-                        << pitch2step(pitch)  << " "
-                        << time << " ";
+            //printf("midiNoteReceived(): pitch %d step %d time %d\n", pitch, pitch2step(pitch), time));
+            /*
             if (event->isPlayed() == true)
                   printf("isPlayed == true\n");
             else
                   printf("isPlayed == false\n");
-            
+            */
             if (event->isPlayed() == false)
                   break;
       }
