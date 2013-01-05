@@ -1445,8 +1445,9 @@ void Seq::heartBeat()
                         if (n.velo()) {
                               while (note1) {
                                     printf("note pitch %d\n", note1->pitch());
-                                    if (note1->pitch() == 76)
-                                          printf("stop!\n");      //examine markedNotes in debugger
+                                    if (note1->pitch() == 76) {
+                                          printf("stop size %d!\n", markedNotes.size());      //examine markedNotes in debugger
+                                    }
                                     
                                     ((Note*)note1)->setSelected(true);  // HACK
                                     markedNotes.append(note1);
@@ -1492,6 +1493,9 @@ void Seq::heartBeat()
                   if (n.velo()) {
                         while (note1) {
                               printf("note pitch %d\n", note1->pitch());
+                              if (note1->pitch() == 76) {
+                                    printf("stop size %d!\n", markedNotes.size());      //examine markedNotes in debugger
+                              }
                               ((Note*)note1)->setSelected(true);  // HACK
                               markedNotes.append(note1);
                               cs->addRefresh(note1->canvasBoundingRect());
