@@ -40,6 +40,7 @@ VoiceButton::VoiceButton(int v, QWidget* parent)
 //   paintEvent
 //---------------------------------------------------------
 
+// coloring of notes not here
 void VoiceButton::paintEvent(QPaintEvent* e)
       {
       QPainter p(this);

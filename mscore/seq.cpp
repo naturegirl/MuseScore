@@ -606,6 +606,22 @@ void Seq::stopTransport()
       emit toGui('0');
       }
 
+
+void Seq::myStopTransport()
+{
+      //state = TRANSPORT_STOP;
+      if (cs == 0)
+            return;
+      stopNotes();
+      // send sustain off
+      Event e;
+      e.setType(ME_CONTROLLER);
+      e.setController(CTRL_SUSTAIN);
+      e.setValue(0);
+      putEvent(e);
+      emit toGui('0');
+}
+
 //---------------------------------------------------------
 //   startTransport
 //    JACK has started
@@ -617,6 +633,12 @@ void Seq::startTransport()
       emit toGui('1');
       state = TRANSPORT_PLAY;
       }
+
+void Seq::myStartTransport()
+{
+      emit toGui('1');
+      //state = TRANSPORT_PLAY;
+}
 
 //---------------------------------------------------------
 //   playEvent
@@ -1451,7 +1473,7 @@ void Seq::heartBeat()
                                     
                                     ((Note*)note1)->setSelected(true);  // HACK
                                     markedNotes.append(note1);
-                                    cs->addRefresh(note1->canvasBoundingRect());
+                                    cs->addRefresh(note1->canvasBoundingRect());          // cs of Score class
                                     note1 = note1->tieFor() ? note1->tieFor()->endNote() : 0;
                               }
                               
@@ -1461,15 +1483,14 @@ void Seq::heartBeat()
                               while (note1) {
                                     ((Note*)note1)->setSelected(false);       // HACK
                                     cs->addRefresh(note1->canvasBoundingRect());
-                                    markedNotes.removeOne(note1);
+                                    //markedNotes.removeOne(note1);
                                     note1 = note1->tieFor() ? note1->tieFor()->endNote() : 0;
                               }
                         }
                   }
             }
-            
             mscore->currentScoreView()->moveCursor(time);
-            //printf("time %d ", time);
+            // printf("time %d ", time);
       }
       
       
@@ -1522,8 +1543,8 @@ void Seq::heartBeat()
       mscore->currentScoreView()->moveCursor(tick);
       //printf("tick %d ", tick);
 
-      //mscore->setPos(tick);       // only for updating the "beat" description in the down right corner
-/*
+      mscore->setPos(tick);       // only for updating the "beat" description in the down right corner
+
       if (pp)
             pp->heartBeat(tick, utick);
 
@@ -1531,6 +1552,6 @@ void Seq::heartBeat()
       if (pre && pre->isVisible())
             pre->heartBeat(this);
       cs->end();
-      */
+      
       }
 

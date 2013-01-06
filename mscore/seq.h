@@ -166,10 +166,15 @@ class Seq : public QObject, public Sequencer {
       void prevChord();
 
       void collectEvents();
+
+      // added by me
       EventMap* getEvents();     // naturegirl
       void setOwnPlayState(bool val); //naturegirl
       void mysetPos(int);     // naturegirl
       void switchOwnPlayState();
+      void myStopTransport();
+      void myStartTransport();
+      bool getOwnPlayState() { return ownPlayState; }
       
       void guiStop();
       void stopWait();
