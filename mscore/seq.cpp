@@ -1435,7 +1435,7 @@ void Seq::heartBeat()
             
             // updating PlayPos important
             myPlayPos = events.lowerBound(time);
-            
+            /*
             for (;;) {
                   EventMap::const_iterator p = myGuiPos;
                   if ((p == myevents->constEnd()) || (p.key() > myPlayPos.key()))
@@ -1470,7 +1470,7 @@ void Seq::heartBeat()
                               }
                         }
                   }
-            }
+            }*/
             mscore->currentScoreView()->moveCursor(time);
       }
       

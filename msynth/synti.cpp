@@ -235,6 +235,12 @@ void MasterSynth::allNotesOff(int channel)
             cnt++;
             // std::cout << synti << " " << cnt << std::endl;
             // EXC_BAD_ACCESS here. when I do "print *synti* the _vptr$Synth = 0x0
+            int *vptr =  *(int**)synti;
+
+            if (vptr == 0) {
+                  printf("allNotesOff(): vptr is zero!! returning...\n");
+                  return;           // that's when the damned thing breaks!!
+            }
             synti->allNotesOff(channel);
       }
       }
