@@ -1404,7 +1404,6 @@ void Seq::heartBeat()
             cnt++;
             if (cnt == 100) cnt = 0;
             EventMap *myevents = getEvents();
-            //EventMap::iterator it = events.begin();
             EventMap::iterator it = myevents->begin();
             Event *event;
             int time;
@@ -1424,17 +1423,6 @@ void Seq::heartBeat()
                   if (time % 10 != 0)
                         continue;
                   
-                  if (cnt == 99) {
-                        int pitch = event->pitch();
-                        // printf("heartBeat() pitch %d step %d time %d\n", pitch, pitch2step(pitch), time);
-                        /*
-                        if (event->isPlayed() == true)
-                              printf("isPlayed == true\n");
-                        else
-                              printf("isPlayed == false\n");
-                        */
-                  }
-                  
                   
                   if (event->isPlayed() == false) {
                         break;
@@ -1445,17 +1433,11 @@ void Seq::heartBeat()
             
             // let's just try to move that stuff here
             
-            // the main point lies in updating playpos
+            // updating PlayPos important
             myPlayPos = events.lowerBound(time);
             
             for (;;) {
                   EventMap::const_iterator p = myGuiPos;
-                  /*
-                  if (p == myevents->constEnd())
-                      printf("in first if branch\n");
-                  if (p.key() > myPlayPos.key())
-                      printf("in second if branch p-key %d playpos %d guipos %d time %d\n", p.key(), myPlayPos.key(), myGuiPos.key(), time);
-                   */   
                   if ((p == myevents->constEnd()) || (p.key() > myPlayPos.key()))
                         break;
                   p++;
@@ -1468,7 +1450,7 @@ void Seq::heartBeat()
                               while (note1) {
                                     printf("note pitch %d\n", note1->pitch());
                                     if (note1->pitch() == 76) {
-                                          printf("stop size %d!\n", markedNotes.size());      //examine markedNotes in debugger
+                                          printf("stop size %d!\n", markedNotes.size());
                                     }
                                     
                                     ((Note*)note1)->setSelected(true);  // HACK
@@ -1490,7 +1472,6 @@ void Seq::heartBeat()
                   }
             }
             mscore->currentScoreView()->moveCursor(time);
-            // printf("time %d ", time);
       }
       
       
@@ -1541,7 +1522,6 @@ void Seq::heartBeat()
       int tick = cs->repeatList()->utick2tick(utick);
             
       mscore->currentScoreView()->moveCursor(tick);
-      //printf("tick %d ", tick);
 
       mscore->setPos(tick);       // only for updating the "beat" description in the down right corner
 
