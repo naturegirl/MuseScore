@@ -641,7 +641,6 @@ void Seq::myStartTransport()
       emit toGui('1');
       follower->emptyPlayedlist();
       follower->createNotelist(getEvents());
-      follower->printNotelist();
       //state = TRANSPORT_PLAY;
 }
 
@@ -1405,77 +1404,14 @@ void Seq::heartBeat()
       
       
       if (ownPlayState) {
-            static int cnt;
-            cnt++;
-            if (cnt == 100) cnt = 0;
-            EventMap *myevents = getEvents();
-            EventMap::iterator it = myevents->begin();
-            Event *event;
-            int time;
-            // just find the last played note
             
-            // have to iterate the same way like in midiNoteReceived
-            // skipping metronome and only keeping "full" times
-            for (;it != myevents->end(); it++) {
-                  event = &(it.value());
-                  time = it.key();
-                  // skip metronome
-                  if (event->type() == ME_TICK1 || event->type() == ME_TICK2)
-                        continue;
-                  
-                  // do another way. If time isn't a full number than it's not a note
-                  // this way we won't skip notes that are at the same time (chords)
-                  if (time % 10 != 0)
-                        continue;
-                  
-                  
-                  if (event->isPlayed() == false) {
-                        break;
-                  }
-            }
-
-            // now event should have the first note that's not played yet with its time
-            
-            // let's just try to move that stuff here
+            list<NoteElement *>::iterator it = follower->getNotelist_firstUnplayed();
+            NoteElement *elm = *it;
+            int time = elm->time;
             
             // updating PlayPos important
-            myPlayPos = events.lowerBound(time);
-            /*
-            for (;;) {
-                  EventMap::const_iterator p = myGuiPos;
-                  if ((p == myevents->constEnd()) || (p.key() > myPlayPos.key()))
-                        break;
-                  p++;
-                  myGuiPos = p;
-                  if (myGuiPos.value().type() == ME_NOTEON) {
-                        Event n = myGuiPos.value();
-                        const Note* note1 = n.note();
-                        // used for coloring next note
-                        if (n.velo()) {
-                              while (note1) {
-                                    printf("note pitch %d\n", note1->pitch());
-                                    if (note1->pitch() == 76) {
-                                          printf("stop size %d!\n", markedNotes.size());
-                                    }
-                                    
-                                    ((Note*)note1)->setSelected(true);  // HACK
-                                    markedNotes.append(note1);
-                                    cs->addRefresh(note1->canvasBoundingRect());          // cs of Score class
-                                    note1 = note1->tieFor() ? note1->tieFor()->endNote() : 0;
-                              }
-                              
-                        }
-                        // used for decoloring previous note
-                        else {
-                              while (note1) {
-                                    ((Note*)note1)->setSelected(false);       // HACK
-                                    cs->addRefresh(note1->canvasBoundingRect());
-                                    //markedNotes.removeOne(note1);
-                                    note1 = note1->tieFor() ? note1->tieFor()->endNote() : 0;
-                              }
-                        }
-                  }
-            }*/
+            //myPlayPos = events.lowerBound(time);
+
             mscore->currentScoreView()->moveCursor(time);
       }
       

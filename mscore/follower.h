@@ -17,7 +17,7 @@ using namespace std;    // for list
 // information we save for each note for alignment
 class NoteElement {
 public:
-      NoteElement(int _pitch, int _time) { pitch = _pitch; time = _time; };
+      NoteElement(int _pitch, int _time) { pitch = _pitch; time = _time; played = false; error = false; };
       int pitch;
       int time;
       bool played;      // whether already played
@@ -29,12 +29,13 @@ class Follower {
       list<NoteElement *> notelist; // what's expected in the score
       list<int> playedlist;         // what was played by user
       
-      public:
+public:
       Follower();
       ~Follower();
       
       void createNotelist(EventMap *events);   // creating the note list by reading events.
       list<NoteElement *> getNotelist();
+      list<NoteElement *>::iterator getNotelist_firstUnplayed();       // get position in note list of last played element
       void printNotelist();
       
       

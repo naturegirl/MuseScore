@@ -54,6 +54,17 @@ list<NoteElement *> Follower::getNotelist() {
       return notelist;              // return pointer instead?
 }
 
+// border conditions: Everything played. Return null
+list<NoteElement *>::iterator Follower::getNotelist_firstUnplayed() {
+      list<NoteElement *>::iterator it;
+      for (it = notelist.begin(); it != notelist.end(); ++it) {
+            NoteElement *elm = *it;
+            if (elm->played == false)
+                  return it;
+      }
+      return it;      // everything played. Returning last elm?
+}
+
 void Follower::printNotelist() {
       list<NoteElement *>::const_iterator it;
       printf("printNotelist(): ");
@@ -62,7 +73,12 @@ void Follower::printNotelist() {
             NoteElement *elm = *it;
             int pitch = elm->pitch;
             int time = elm->time;
+            bool played = elm->played;
             printf("%d ", pitch);
+            if (played)
+                  printf("true\n");
+            else
+                  printf("false\n");
             cnt++;
             if (cnt > 20) break;
       }
@@ -94,5 +110,11 @@ void Follower::printPlayedlist() {
 
 
 void Follower::update() {
+      int pitch = playedlist.back();      // last element
+      list<NoteElement *>::iterator it = getNotelist_firstUnplayed();
+      NoteElement *elm = *it;
+      if (elm->pitch == pitch)
+            elm->played = true;     // sets played to true when right note.
+      
       
 }

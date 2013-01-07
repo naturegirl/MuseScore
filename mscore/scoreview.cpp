@@ -4785,8 +4785,8 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
       
       
       follower->insertPlayedlist(pitch);
-      if (pitch == 76)
-            follower->printPlayedlist();
+      follower->update();
+      follower->printNotelist();
             
 qDebug("midiNoteReceived %d chord %d", pitch, chord);
             
