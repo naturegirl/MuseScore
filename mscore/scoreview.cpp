@@ -16,6 +16,7 @@
 */
 
 #include <iostream>
+#include <ctime>
 
 #include "globals.h"
 #include "scoreview.h"
@@ -4781,6 +4782,10 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
       
       
 qDebug("midiNoteReceived %d chord %d", pitch, chord);
+            
+            clock_t t = clock();
+            printf("current clock tick: %d\n", t);
+      
       score()->enqueueMidiEvent(ev);
       if (!score()->undo()->active())
             cmd(0);

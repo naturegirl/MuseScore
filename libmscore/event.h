@@ -14,6 +14,10 @@
 #ifndef __EVENT_H__
 #define __EVENT_H__
 
+#include <QSharedDataPointer>
+#include <QList>
+#include <QMap>
+
 class Note;
 // class MidiFile;
 class Xml;
