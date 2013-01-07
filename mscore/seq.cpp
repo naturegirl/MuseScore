@@ -194,6 +194,7 @@ Seq::Seq()
       cv              = 0;
       
       ownPlayState = false;
+      follower = new Follower();
 
       endTick  = 0;
       state    = TRANSPORT_STOP;
@@ -230,6 +231,7 @@ Seq::~Seq()
       {
       delete synti;
       delete driver;
+      delete follower;
       }
 
 //---------------------------------------------------------
@@ -637,6 +639,9 @@ void Seq::startTransport()
 void Seq::myStartTransport()
 {
       emit toGui('1');
+      follower->emptyPlayedlist();
+      follower->createNotelist(getEvents());
+      follower->printNotelist();
       //state = TRANSPORT_PLAY;
 }
 

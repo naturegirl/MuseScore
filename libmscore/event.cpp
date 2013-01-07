@@ -256,6 +256,7 @@ Event::Event()
 Event::Event(const Event& s)
    : d(s.d)
       {
+      played = false;
       }
 
 Event::Event(int t)

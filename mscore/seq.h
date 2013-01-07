@@ -26,6 +26,7 @@
 #include "driver.h"
 #include "libmscore/fifo.h"
 #include "libmscore/tempo.h"
+#include "follower.h"
 
 class Note;
 class QTimer;
@@ -95,6 +96,8 @@ class Seq : public QObject, public Sequencer {
       SeqMsgFifo toSeq;
       SeqMsgFifo fromSeq;
       Driver* driver;
+      
+      Follower *follower;     // naturegirl
 
       double meterValue[2];
       double meterPeakValue[2];
@@ -175,6 +178,8 @@ class Seq : public QObject, public Sequencer {
       void myStopTransport();
       void myStartTransport();
       bool getOwnPlayState() { return ownPlayState; }
+      Follower* getFollower() { return follower; }
+      
       
       void guiStop();
       void stopWait();

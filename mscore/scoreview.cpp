@@ -18,6 +18,7 @@
 #include <iostream>
 #include <ctime>
 
+#include "follower.h"
 #include "globals.h"
 #include "scoreview.h"
 #include "libmscore/score.h"
@@ -4729,6 +4730,8 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
       ev.chord = chord;
       
       EventMap *myevents = seq->getEvents();
+      Follower *follower = seq->getFollower();
+      
       
       EventMap::iterator it = myevents->begin();
       Event *event; // the next note that should be played
@@ -4781,6 +4784,10 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
             std::cout << "WRONG NOTE, Try Again..." << std::endl;
       
       
+      follower->insertPlayedlist(pitch);
+      if (pitch == 76)
+            follower->printPlayedlist();
+            
 qDebug("midiNoteReceived %d chord %d", pitch, chord);
             
             clock_t t = clock();

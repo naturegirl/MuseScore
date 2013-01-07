@@ -16,6 +16,8 @@ using namespace std;    // for list
 
 // information we save for each note for alignment
 class NoteElement {
+public:
+      NoteElement(int _pitch, int _time) { pitch = _pitch; time = _time; };
       int pitch;
       int time;
       bool played;      // whether already played
@@ -30,12 +32,19 @@ class Follower {
       public:
       Follower();
       ~Follower();
-      /*
-      void createNotelist(Eventmap *events);   // creating the note list by reading events.
-      List<NoteElement *> getNotelist();
-      List<int> getPlayedlist();
+      
+      void createNotelist(EventMap *events);   // creating the note list by reading events.
+      list<NoteElement *> getNotelist();
+      void printNotelist();
+      
+      
+      list<int> getPlayedlist();
       void insertPlayedlist(int pitch);   // insert new played note into played list;
-*/
+      void emptyPlayedlist();       // sets it to empty again.
+      void printPlayedlist();
+      
+      void update();    // call after insertPlayedlist() to update the played value in notelist. This is where the following happens.
+
 };
 
 #endif
