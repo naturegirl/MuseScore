@@ -4729,44 +4729,9 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
       ev.pitch = pitch;
       ev.chord = chord;
       
-      EventMap *myevents = seq->getEvents();
       Follower *follower = seq->getFollower();
       
-      
-      EventMap::iterator it = myevents->begin();
-      Event *event; // the next note that should be played
-      int time;
-      
-      
-      //int cnt = 0;
-      for (;it != myevents->end(); it++) {
-            //cnt++;
-            //if (cnt > 100) break;
-            time = it.key();
-            event = &(it.value());
-            
-            // skip metronome
-            if (event->type() == ME_TICK1 || event->type() == ME_TICK2)
-                  continue;
-            
-            // do another way. If time isn't a full number than it's not a note
-            // this way we won't skip notes that are at the same time (chords)
-            if (time % 10 != 0)
-                  continue;
-            
-            int pitch = event->pitch();
-            
-            //printf("midiNoteReceived(): pitch %d step %d time %d\n", pitch, pitch2step(pitch), time));
             /*
-            if (event->isPlayed() == true)
-                  printf("isPlayed == true\n");
-            else
-                  printf("isPlayed == false\n");
-            */
-            if (event->isPlayed() == false)
-                  break;
-      }
-
       std::cout << "midiNoteReceived() next note pitch: " << event->pitch() << " "
             << pitch2step(event->pitch()) << " ";
       if (event->isPlayed() == true)
@@ -4774,23 +4739,20 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
       else
             printf("isPlayed == false\n");
             
-            
+      /*
       if (pitch == event->pitch()) {
             std::cout << "RIGHT NOTE PLAYED!!" << std::endl;
             event->setPlayed(true);             // delete that stuff?
       }
       else
             std::cout << "WRONG NOTE, Try Again..." << std::endl;
-      
+       */
       
       follower->insertPlayedlist(pitch);
       follower->update2();
 //      follower->printNotelist();
             
 qDebug("midiNoteReceived %d chord %d", pitch, chord);
-            
-            clock_t t = clock();
-            printf("current clock tick: %d\n", t);
       
       score()->enqueueMidiEvent(ev);
       if (!score()->undo()->active())

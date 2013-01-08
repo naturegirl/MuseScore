@@ -49,6 +49,7 @@ void Follower::createNotelist(EventMap *events) {
             notelist.push_back(noteElm);
       }
       nextMatrixStart = notelist.begin();
+      lastMatch = notelist.begin();
 }
 
 list<NoteElement *> Follower::getNotelist() {
@@ -65,6 +66,7 @@ list<NoteElement *>::iterator Follower::getNotelist_firstUnplayed() {
       }
       return it;      // everything played. Returning last elm?
 }
+
 
 void Follower::printNotelist() {
       list<NoteElement *>::const_iterator it;
@@ -170,15 +172,35 @@ void Follower::update2() {
                   foundmatch = true;
             }
       }
-      if (foundmatch)
-            printf("maxmatch: %d\n", maxmatch);
-      else
-            printf("no match found\n");
+      
+      // find elm in notelist with our time
+      if (foundmatch) {
+            printf("foundmatch true, maxmatch %d\n", maxmatch);
+            list<NoteElement *>::iterator it = lastMatch;
+            const int windowsize = 4;     // move that somewhere else? when optimizing
+            for (int i = 0; i < windowsize; ++i) {
+                  NoteElement *elm = *it;
+
+                  if (elm->time == time) {
+                        printf("foundmatch. setting time %d to played!\n", time);
+                        elm->played = true;     // this is the step to be done in all updates()!!
+                        lastMatch = it;
+                        
+                        // with the windowsize it's possible that we skipped some unplayed notes. Set them to played too
+                        for (int j = 0; j < i; ++j) {
+                              it--;
+                              elm = *it;
+                              elm->played = true;
+                        }
+                        break;
+                  }
+                  it++;
+            }
+      }
+      
       printBestlength();
       
       pos_cnt++;
-      if (pos_cnt == 10)
-            printBestlength();
       
       if (pos_cnt == n_matrix) pos_cnt = 0;
 }

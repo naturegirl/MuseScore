@@ -41,6 +41,7 @@ class Follower {
       // initialized in createNotelist()
       // updated in update2() when initializing score array
       list<NoteElement *>::iterator nextMatrixStart;
+      list<NoteElement *>::iterator lastMatch;  // last matched element. So we don't have to start searching for the next one from the beginning.
       
 public:
       Follower();
@@ -49,6 +50,7 @@ public:
       void createNotelist(EventMap *events);   // creating the note list by reading events.
       list<NoteElement *> getNotelist();
       list<NoteElement *>::iterator getNotelist_firstUnplayed();       // get position in note list of last played element
+      
       void printNotelist();
       
       
