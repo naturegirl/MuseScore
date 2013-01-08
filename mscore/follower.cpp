@@ -156,13 +156,24 @@ void Follower::update2() {
       int j = pos_cnt+1;      // j is position of performance in matrix. also goes from 1~n_matrix instead of 0~n_matrix-1
       for (int i = 1; i <= n_matrix; ++i) {
             bestlength[i][j] = max(bestlength[i-1][j], bestlength[i][j-1]);
+            if (score[i-1] == performance[j-1])
+                  bestlength[i][j] = max(bestlength[i][j], 1+bestlength[i-1][j-1]);
       }
       
-      
       pos_cnt++;
+      if (pos_cnt == 10)
+            printBestlength();
+      
       if (pos_cnt == n_matrix) pos_cnt = 0;
 }
 
-
+void Follower::printBestlength() {
+      const int size = 10;     // just print so much
+      for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j)
+                  printf("%d ", bestlength[i][j]);
+            printf("\n");
+      }
+}
 
 

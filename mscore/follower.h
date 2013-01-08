@@ -56,6 +56,8 @@ public:
       void emptyPlayedlist();       // sets it to empty again.
       void printPlayedlist();
       
+      void printBestlength();
+      
       void update();    // call after insertPlayedlist() to update the played value in notelist. This is where the following happens.
       
       void update2();
