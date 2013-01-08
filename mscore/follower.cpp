@@ -127,12 +127,16 @@ void Follower::update() {
 // using Dannenberg's algorithm.
 void Follower::update2() {
       static int pos_cnt;     // note that we start with 1. Col and Row zero are just for initialization
+      static int maxmatch;     // the underlined position in bestlength matrix, describing the line in current played col
+      int time;         // this is the time for the noteelement in notelist we want to update.
       
       // start a new matrix
       if (pos_cnt == 0) {
+            maxmatch = 0;
             // do some initialization
             memset(bestlength, 0, sizeof(bestlength));
             memset(score, 0, sizeof(score));
+            memset(score_time, 0, sizeof(score));
             memset(performance, 0, sizeof(performance));
             // not even necessary, just start with 1 then!
             for (int i = 0; i < n_matrix+1; ++i)
@@ -144,21 +148,33 @@ void Follower::update2() {
             for (int i = 0; i < n_matrix; ++i) {
                   NoteElement *elm = *nextMatrixStart;
                   score[i] = elm->pitch;
+                  score_time[i] = elm->time;
                   nextMatrixStart++;
             }
       }
-      printf("stop");
+
       // fill performance array on each call
       int pitch = playedlist.back();      // last element. No playedlist in current context? notelist neither. What's wrong??
       performance[pos_cnt] = pitch;
       
       // calculate each column for each new input. Note: calculating col 1~n_matrix. (instead of 0~n_matrix-1)
       int j = pos_cnt+1;      // j is position of performance in matrix. also goes from 1~n_matrix instead of 0~n_matrix-1
+      int foundmatch = false; // wether we found a new bestmatch in this iteration
       for (int i = 1; i <= n_matrix; ++i) {
             bestlength[i][j] = max(bestlength[i-1][j], bestlength[i][j-1]);
             if (score[i-1] == performance[j-1])
                   bestlength[i][j] = max(bestlength[i][j], 1+bestlength[i-1][j-1]);
+            if (bestlength[i][j] > maxmatch) {
+                  maxmatch = bestlength[i][j];
+                  time = score_time[i-1];
+                  foundmatch = true;
+            }
       }
+      if (foundmatch)
+            printf("maxmatch: %d\n", maxmatch);
+      else
+            printf("no match found\n");
+      printBestlength();
       
       pos_cnt++;
       if (pos_cnt == 10)

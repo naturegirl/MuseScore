@@ -34,6 +34,7 @@ class Follower {
       static const int n_matrix = 20;      // size of bestlength matrix. Matrix is actually bigger by one!
       int bestlength[n_matrix+1][n_matrix+1];       // from Dannenberg's paper. one init row and col!
       int score[n_matrix];
+      int score_time[n_matrix];     // in parallel with score to store corresponding time. Helps us find in notelist
       int performance[n_matrix];
       
       // when creating a new bestlength we should take this element.
