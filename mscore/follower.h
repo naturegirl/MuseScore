@@ -16,6 +16,7 @@ using namespace std;    // for list
 
 // information we save for each note for alignment
 class NoteElement {
+      
 public:
       NoteElement(int _pitch, int _time) { pitch = _pitch; time = _time; played = false; error = false; };
       int pitch;
@@ -28,6 +29,17 @@ class Follower {
 
       list<NoteElement *> notelist; // what's expected in the score
       list<int> playedlist;         // what was played by user
+      
+      // these variables are all for Dannnenberg's algorithm in update2
+      static const int n_matrix = 20;      // size of bestlength matrix. Matrix is actually bigger by one!
+      int bestlength[n_matrix+1][n_matrix+1];       // from Dannenberg's paper. one init row and col!
+      int score[n_matrix];
+      int performance[n_matrix];
+      
+      // when creating a new bestlength we should take this element.
+      // initialized in createNotelist()
+      // updated in update2() when initializing score array
+      list<NoteElement *>::iterator nextMatrixStart;
       
 public:
       Follower();
@@ -45,6 +57,8 @@ public:
       void printPlayedlist();
       
       void update();    // call after insertPlayedlist() to update the played value in notelist. This is where the following happens.
+      
+      void update2();
 
 };
 

@@ -4777,16 +4777,15 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
             
       if (pitch == event->pitch()) {
             std::cout << "RIGHT NOTE PLAYED!!" << std::endl;
-            event->setPlayed(true);
-            //myevents->insertMulti(time, *event);      // replace?
+            event->setPlayed(true);             // delete that stuff?
       }
       else
             std::cout << "WRONG NOTE, Try Again..." << std::endl;
       
       
       follower->insertPlayedlist(pitch);
-      follower->update();
-      follower->printNotelist();
+      follower->update2();
+//      follower->printNotelist();
             
 qDebug("midiNoteReceived %d chord %d", pitch, chord);
             

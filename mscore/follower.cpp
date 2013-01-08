@@ -48,6 +48,7 @@ void Follower::createNotelist(EventMap *events) {
             noteElm = new NoteElement(pitch, time);
             notelist.push_back(noteElm);
       }
+      nextMatrixStart = notelist.begin();
 }
 
 list<NoteElement *> Follower::getNotelist() {
@@ -106,9 +107,11 @@ void Follower::printPlayedlist() {
             printf("%d ", *it);
       printf("\n");
       printf("size %d\n", playedlist.size());
+      int pitch = playedlist.back();
 }
 
 
+// in the end all versions of update should or should not update played value
 void Follower::update() {
       int pitch = playedlist.back();      // last element
       list<NoteElement *>::iterator it = getNotelist_firstUnplayed();
@@ -118,3 +121,48 @@ void Follower::update() {
       
       
 }
+
+
+
+// using Dannenberg's algorithm.
+void Follower::update2() {
+      static int pos_cnt;     // note that we start with 1. Col and Row zero are just for initialization
+      
+      // start a new matrix
+      if (pos_cnt == 0) {
+            // do some initialization
+            memset(bestlength, 0, sizeof(bestlength));
+            memset(score, 0, sizeof(score));
+            memset(performance, 0, sizeof(performance));
+            // not even necessary, just start with 1 then!
+            for (int i = 0; i < n_matrix+1; ++i)
+                  bestlength[i][0] = 0;  // set initialization col
+            for (int i = 0; i < n_matrix+1; ++i)
+                  bestlength[0][i] = 0;  // set initialization row
+            
+            // fill score array
+            for (int i = 0; i < n_matrix; ++i) {
+                  NoteElement *elm = *nextMatrixStart;
+                  score[i] = elm->pitch;
+                  nextMatrixStart++;
+            }
+      }
+      printf("stop");
+      // fill performance array on each call
+      int pitch = playedlist.back();      // last element. No playedlist in current context? notelist neither. What's wrong??
+      performance[pos_cnt] = pitch;
+      
+      // calculate each column for each new input. Note: calculating col 1~n_matrix. (instead of 0~n_matrix-1)
+      int j = pos_cnt+1;      // j is position of performance in matrix. also goes from 1~n_matrix instead of 0~n_matrix-1
+      for (int i = 1; i <= n_matrix; ++i) {
+            bestlength[i][j] = max(bestlength[i-1][j], bestlength[i][j-1]);
+      }
+      
+      
+      pos_cnt++;
+      if (pos_cnt == n_matrix) pos_cnt = 0;
+}
+
+
+
+
