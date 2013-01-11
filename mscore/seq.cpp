@@ -21,6 +21,7 @@
 #include "config.h"
 #include "seq.h"
 #include "musescore.h"
+#include "follower.h"
 
 #ifdef USE_ALSA
 #include "alsa.h"

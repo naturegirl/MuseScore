@@ -69,7 +69,7 @@ static const char* iconNames[] = {
       "speaker.svg",
       "start.svg",
       "play.svg",
-      "play.svg",       // icon for ownplay button
+      "ownplay2.svg",       // icon for ownplay button
       "repeat.svg",
       "pan.svg",
       "sbeam.svg",
@@ -129,6 +129,12 @@ void genIcons()
 // qDebug("genIcons <%s>\n", qPrintable(iconPath + iconGroup));
       for (int i = 0; i < voice1_ICON; ++i) {
             icons[i] = new QIcon(iconPath + iconGroup + iconNames[i]);
+            /*
+            if (i == 34) {      // own icon
+                  if (icons[34]->pixmap(5).isNull())
+                        printf("doesn't work either");
+                  }
+                  */
             if (icons[i]->isNull() || icons[i]->pixmap(12).isNull()) {
                   qDebug("cannot load Icon <%s>\n", qPrintable(iconPath + iconGroup + iconNames[i]));
                   }

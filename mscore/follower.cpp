@@ -177,7 +177,7 @@ void Follower::update2() {
       if (foundmatch) {
             printf("foundmatch true, maxmatch %d\n", maxmatch);
             list<NoteElement *>::iterator it = lastMatch;
-            const int windowsize = 4;     // move that somewhere else? when optimizing
+            const int windowsize = 7;     // move that somewhere else? when optimizing
             for (int i = 0; i < windowsize; ++i) {
                   NoteElement *elm = *it;
 
@@ -198,7 +198,7 @@ void Follower::update2() {
             }
       }
       
-      printBestlength();
+      // printBestlength();
       
       pos_cnt++;
       

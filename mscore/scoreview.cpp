@@ -4753,6 +4753,8 @@ void ScoreView::midiNoteReceived(int pitch, bool chord)
 //      follower->printNotelist();
             
 qDebug("midiNoteReceived %d chord %d", pitch, chord);
+            clock_t time = clock();
+            printf("midiNoteReceived tick: %d\n", time);
       
       score()->enqueueMidiEvent(ev);
       if (!score()->undo()->active())

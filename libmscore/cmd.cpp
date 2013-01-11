@@ -1546,6 +1546,9 @@ void Score::cmdResetBeamMode()
 
 bool Score::processMidiInput()
       {
+      clock_t tick = clock();
+      printf("processMidiInput() tick %d\n", tick);
+      
       if (MScore::debugMode)
           qDebug("processMidiInput");
       if (midiInputQueue.isEmpty())
